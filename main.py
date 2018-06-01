@@ -15,8 +15,12 @@ from utils import get_logger, make_path, clean, create_model, save_model
 from utils import print_config, save_config, load_config, test_ner
 from data_utils import load_word2vec, create_input, input_from_line, BatchManager
 import os
+# import sys
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
+
 flags = tf.app.flags
-flags.DEFINE_boolean("clean",       True,      "clean train folder")
+flags.DEFINE_boolean("clean",       False,      "clean train folder")
 flags.DEFINE_boolean("train",       True,      "Wither train the model")
 # configurations for the model
 flags.DEFINE_integer("seg_dim",     20,         "Embedding size for segmentation, 0 if not used")
@@ -82,6 +86,7 @@ def config_model(char_to_id, tag_to_id):
 def evaluate(sess, model, name, data, id_to_tag, logger):
     logger.info("evaluate:{}".format(name))
     ner_results = model.evaluate(sess, data, id_to_tag)
+    
     eval_lines = test_ner(ner_results, FLAGS.result_path)
     for line in eval_lines:
         logger.info(line)
@@ -107,6 +112,7 @@ def train():
     dev_sentences = load_sentences(FLAGS.dev_file, FLAGS.lower, FLAGS.zeros)
     test_sentences = load_sentences(FLAGS.test_file, FLAGS.lower, FLAGS.zeros)
 
+#     print(train_sentences[0])
     # Use selected tagging scheme (IOB / IOBES)
     update_tag_scheme(train_sentences, FLAGS.tag_schema)
     update_tag_scheme(test_sentences, FLAGS.tag_schema)

@@ -91,9 +91,10 @@ def tag_mapping(sentences):
 def prepare_dataset(sentences, char_to_id, tag_to_id, lower=False, train=True):
     """
     Prepare the dataset. Return a list of lists of dictionaries containing:
-        - word indexes
-        - word char indexes
-        - tag indexes
+        - char list of sentences
+        - char indexes
+        - segment tag indexes
+        - tag indexes(if use iobes tagset,  I-XXX will be replaced by E-XXX)
     """
 
     none_index = tag_to_id["O"]

@@ -1,3 +1,4 @@
+# encoding=utf8
 import os
 import json
 import shutil
@@ -55,7 +56,7 @@ def test_ner(results, path):
     Run perl script to evaluate model
     """
     output_file = os.path.join(path, "ner_predict.utf8")
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf8") as f:
         to_write = []
         for block in results:
             for line in block:
