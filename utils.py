@@ -58,15 +58,31 @@ def test_ner(results, path):
     output_file = os.path.join(path, "ner_predict.utf8")
     with open(output_file, "w", encoding="utf8") as f:
         to_write = []
+        to_write_p = []
         for block in results:
             for line in block:
                 to_write.append(line + "\n")
+                to_write_p.append(filter_truth_tags(line) + "\n")
             to_write.append("\n")
-
+            to_write_p.append("\n")
         f.writelines(to_write)
+        
+    with open(output_file + ".cmp", "w", encoding="utf8") as f1:
+        to_write_p = []
+        for block in results:
+            for line in block:
+                to_write_p.append(filter_truth_tags(line) + "\n")
+            to_write_p.append("\n")
+        f1.writelines(to_write_p)
+        
     eval_lines = return_report(output_file)
     return eval_lines
 
+def filter_truth_tags(line):
+    vals = line.split(' ')
+    line = " ".join([vals[0], vals[-1]])
+    return line
+    
 
 def print_config(config, logger):
     """

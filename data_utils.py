@@ -293,11 +293,12 @@ class BatchManager(object):
     def sort_and_pad(self, data, batch_size):
         num_batch = int(math.ceil(len(data) /batch_size))
         #sorted by sentence's length
-        sorted_data = sorted(data, key=lambda x: len(x[0]))
-        
+#         sorted_data = sorted(data, key=lambda x: len(x[0]))
+        sorted_data = data
         batch_data = list()
         for i in range(num_batch):
             batch_data.append(self.pad_data(sorted_data[i*batch_size : (i+1)*batch_size]))
+#         print(batch_data[0])
         return batch_data
 
     @staticmethod
@@ -307,7 +308,7 @@ class BatchManager(object):
         segs = []
         targets = []
         max_length = max([len(sentence[0]) for sentence in data])
-        print(max_length)
+#         print(max_length)
         for line in data:
             string, char, seg, target = line
             padding = [0] * (max_length - len(string))
